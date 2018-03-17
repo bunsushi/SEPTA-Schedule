@@ -28,7 +28,7 @@ $("#add-train").on("click", function (event) {
     firstTrain = $("#first-train-input").val().trim();
     frequency = $("#frequency-input").val().trim();
 
-    var firstTrainConverted = moment(firstTrain, "hh:mm").subtract(1, "years");
+    var firstTrainConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
     var timeDifference = moment().diff(moment(firstTrainConverted), "minutes");
     var remainder = timeDifference % frequency;
     var minutesAway = frequency - remainder;
@@ -47,27 +47,21 @@ $("#add-train").on("click", function (event) {
     console.log("REMAINDER: " + remainder);
 
     //Push to Firebase
-    // database.ref().push({
+    database.ref().push({
 
-    //     train: train,
-    //     destination: destination,
-    //     firstTrain: firstTrain,
-    //     frequency: frequency,
-    //     minutesAway: minutesAway,
-    //     nextArrival: arrivalTime
-    // });
+        train: train,
+        destination: destination,
+        firstTrain: firstTrain,
+        frequency: frequency,
+        minutesAway: minutesAway,
+        nextArrival: arrivalTime
+    });
 });
 
-// database.ref().on("child_added", function (childSnapshot) {
-//     console.log(childSnapshot.val().train);
-//     console.log(childSnapshot.val().destination);
-//     console.log(childSnapshot.val().firstTrain);
-//     console.log(childSnapshot.val().frequency);
-//     console.log(childSnapshot.val().nextArrival);
-//     console.log(childSnapshot.val().minutesAway);
+database.ref().on("child_added", function (childSnapshot) {
 
-
-//     $("#train-table").append("<tr><td>" + childSnapshot.val().train + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + childSnapshot.val().nextArrival + "</td><td>" + childSnapshot.val().minutesAway + "</td></tr>");
-// }, function (errorObject) {
-//     console.log("Errors handled: " + errorObject.code);
-// });
+    // ATTN How do you dynamically update the DOM?
+    $("#train-table").append("<tr><td>" + childSnapshot.val().train + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + childSnapshot.val().nextArrival + "</td><td>" + childSnapshot.val().minutesAway + "</td></tr>");
+}, function (errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+});

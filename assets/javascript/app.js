@@ -13,10 +13,17 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Initial values
-var train = "";
-var destination = "";
+var train;
+var destination;
 var firstTrain;
 var frequency;
+var arrivalTime;
+var minutesAway;
+
+var currentTime = moment();
+console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm LLL"));
+var fullYear = moment(currentTime).subtract(1, "years");
+console.log("PREVIOUS DAY: " + moment(fullYear).format("hh:mm LLL"));
 
 // Capture Admin Button Click
 $("#add-train").on("click", function (event) {
@@ -28,24 +35,6 @@ $("#add-train").on("click", function (event) {
     firstTrain = $("#first-train-input").val().trim();
     frequency = $("#frequency-input").val().trim();
 
-    var firstTrainConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
-    var timeDifference = moment().diff(moment(firstTrainConverted), "minutes");
-    var remainder = timeDifference % frequency;
-    var minutesAway = frequency - remainder;
-    var nextArrival = moment().add(minutesAway, "minutes");
-    var arrivalTime = moment(nextArrival).format("HH:mm");
-
-    console.log("CURRENT TIME:" + moment());
-    console.log("TRAIN: " + train);
-    console.log("DESTINATION: " + destination);
-    console.log("FIRST TRAIN: " + firstTrain);
-    console.log("FREQUENCY: " + frequency);
-    console.log("ARRIVAL TIME: " + arrivalTime);
-    console.log("MINUTES AWAY: " + minutesAway);
-    console.log("FIRST TRAIN CONVERTED: " + firstTrainConverted);
-    console.log("TIME DIFFERENCE: " + timeDifference);
-    console.log("REMAINDER: " + remainder);
-
     //Push to Firebase
     database.ref().push({
 
@@ -53,15 +42,39 @@ $("#add-train").on("click", function (event) {
         destination: destination,
         firstTrain: firstTrain,
         frequency: frequency,
-        minutesAway: minutesAway,
-        nextArrival: arrivalTime
     });
 });
 
 database.ref().on("child_added", function (childSnapshot) {
 
+    train = childSnapshot.val().train;
+    console.log("Train: " + train);
+    destination = childSnapshot.val().destination;
+    console.log("Destination: " + destination);
+    firstTrain = childSnapshot.val().firstTrain;
+    console.log("First Train: " + firstTrain);
+    frequency = childSnapshot.val().frequency;
+    console.log("Departs every " + frequency + " minutes");
+
+    var firstTrainConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
+
+    var diffDate = moment(currentTime).diff(moment(fullYear), "minutes");
+    console.log("DIFFERENCE IN DATE: " + diffDate);
+    var diffTime = moment().diff(moment(firstTrainConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    var remainder = (diffTime - diffDate) % frequency;
+    console.log(remainder);
+    var minutesAway = frequency - remainder;
+    console.log("Next train is " + minutesAway + " minutes away");
+
+    var nextTrain = moment().add(minutesAway, "minutes");
+    nextTrain = moment(nextTrain).format("hh:mm A");
+    console.log("ARRIVAL TIME: " + nextTrain);
+    
+
     // ATTN How do you dynamically update the DOM?
-    $("#train-table").append("<tr><td>" + childSnapshot.val().train + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + childSnapshot.val().nextArrival + "</td><td>" + childSnapshot.val().minutesAway + "</td></tr>");
+    $("#train-table").append("<tr><td>" + train + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + nextTrain + "</td><td>" + minutesAway + "</td></tr>");
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });

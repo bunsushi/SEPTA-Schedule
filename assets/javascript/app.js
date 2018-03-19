@@ -19,9 +19,7 @@ var firstTrain;
 var frequency;
 
 var currentTime = moment();
-console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm LLL"));
 var fullYear = moment(currentTime).subtract(1, "years");
-console.log("PREVIOUS DAY: " + moment(fullYear).format("hh:mm LLL"));
 
 // Capture Admin Button Click
 $("#add-train").on("click", function (event) {
@@ -39,8 +37,7 @@ $("#add-train").on("click", function (event) {
         train: train,
         destination: destination,
         firstTrain: firstTrain,
-        frequency: frequency,
-        currentTime: currentTime
+        frequency: frequency
     });
 
     // Clear input field
@@ -80,3 +77,8 @@ database.ref().on("child_added", function (childSnapshot) {
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });
+
+// HACKY REFRESH
+setInterval(function() {
+    location.reload();
+}, 1000 * 60);

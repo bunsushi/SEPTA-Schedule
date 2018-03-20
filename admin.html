@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Admin | Trolley Tracker</title>
+    <link rel="icon" type="image/png" href="assets/images/septa-logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -30,6 +31,32 @@
 <body>
 
     <div class="container">
+            <div class="page-header">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="assets/images/septa-logo-name.png" alt="SEPTA logo" id="septa-logo">
+                        </div>
+                        <div class="col-md-7" id="septa-header">
+                            <h1>Trolley Tracker*</h1>
+                            <h3>Southeastern Pennsylvania Transportation Authority</h5>
+                                <h5>*A made-up transit timetable of my dreams where my trolley actually comes at a predictable time</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <div class="clock">
+                                    <div class="face">
+                                        <div id="hour" class="hour"></div>
+                                        <div id="minute" class="minute"></div>
+                                        <div id="second" class="second"></div>
+                                    </div>
+                                </div>
+                                <h4>Current Time:</h4>
+                                <h5 id="display-time"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         <div class="row">
 
             <div class="col-md-3">
@@ -46,7 +73,7 @@
                         <!-- Entry Form -->
                         <form>
                             <div class="form-group">
-                                <label for="train-name-input">Train Name</label>
+                                <label for="train-name-input">Route</label>
                                 <input class="form-control" id="train-name-input" type="text">
                             </div>
                             <div class="form-group">
@@ -85,7 +112,7 @@
                         <table class="table table-hover" id='train-table'>
                             <thead>
                                 <tr>
-                                    <th>Train Name</th>
+                                    <th>Route</th>
                                     <th>Destination</th>
                                     <th>Frequency (min)</th>
                                     <th>Next Arrival</th>

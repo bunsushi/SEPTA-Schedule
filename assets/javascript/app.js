@@ -1,3 +1,35 @@
+$(document).ready(function () {
+
+// Current Time (Moment.js Analog Clock Dupe)
+$(function() {
+    function updateClock() {
+      var now = moment(),
+        second = now.seconds() * 6,
+        minute = now.minutes() * 6 + second / 60,
+        hour = (now.hours() % 12) / 12 * 360 + 90 + minute / 12;
+  
+      $("#hour").css("transform", "rotate(" + hour + "deg)");
+      $("#minute").css("transform", "rotate(" + minute + "deg)");
+      $("#second").css("transform", "rotate(" + second + "deg)");
+    }
+  
+    function timedUpdate() {
+      updateClock();
+      setTimeout(timedUpdate, 1000);
+    }
+  
+    timedUpdate();
+  });
+
+// Display Curent Date and Time
+function displayTime() {
+    var time = moment().format("llll");
+    $('#display-time').html(time);
+    setTimeout(displayTime, 1000);
+}
+
+displayTime();
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyDpXmCQeDFe-GqWdcuGuow3yhXyPALqJXY",
@@ -65,12 +97,20 @@ database.ref().on("child_added", function (childSnapshot) {
     var nextTrain = moment().add(minutesAway, "minutes");
     nextTrain = moment(nextTrain).format("hh:mm A");
 
+    console.log("First Train: " + firstTrain);
+    console.log(moment(firstTrainConverted).format("LLL"));
+    console.log(diffDate);
+    console.log(diffTime);
+    console.log(diffDate - diffTime);
+    console.log(remainder);
+    console.log("======================");
+
     var row = $("<tr>");
     row.append("<td>" + train + "</td>");
-    row.append("<td>" + destination + "</td>");
-    row.append("<td>" + frequency + "</td>");
+    row.append("<td><span class='glyphicon glyphicon-circle-arrow-right'></span> " + destination + "</td>");
+    row.append("<td> Every " + frequency + " minutes</td>");
     row.append("<td>" + nextTrain + "</td>");
-    row.append("<td>" + minutesAway + "</td>");
+    row.append("<td>" + minutesAway + " minutes</td>");
     $("#train-table").append(row);
     $("#ui-train-table").append(row);
 
@@ -82,3 +122,5 @@ database.ref().on("child_added", function (childSnapshot) {
 setInterval(function() {
     location.reload();
 }, 1000 * 60);
+
+});

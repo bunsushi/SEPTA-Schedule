@@ -1,0 +1,99 @@
+body {
+    background-color: #262626;
+    color: #fff;
+}
+
+h1 {
+    font-size: 5em;
+}
+
+/* Header Styles */
+#septa-logo {
+    width: 100%;
+}
+
+.page-header {
+    overflow: auto;
+    position: relative;
+}
+
+/* Analog Clock Styles */
+.clock {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    position: relative;
+    border: 5px solid #fff;
+    border-radius: 50%;
+}
+
+.clock .face {
+    width: 100%;
+    height: 100%;
+}
+
+.clock .face:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    background: #fff;
+    border-radius: 6px;
+    content: "";
+    display: block;
+}
+.clock .face .hour,
+.clock .face .minute,
+.clock .face .second {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+    border-radius: 4px 0 0 4px;
+}
+
+.clock .face .minute,
+.clock .face .second {
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+}
+
+.clock .face .hour {
+    margin: -3px 0 -3px -25%;
+    padding: 3px 0 3px 25%;
+    -webkit-transform-origin: 100% 50%;
+    transform-origin: 100% 50%;
+}
+
+.clock .face .minute {
+    margin: -40% -2px 0;
+    padding: 40% 2px 0;
+}
+
+.clock .face .second {
+    margin: -40% -1px 0 0;
+    padding: 40% 1px 0;
+}
+
+/* Panel Styles*/
+.panel, .panel-heading {
+    background-color: #207200;
+    border: none;
+}
+
+.panel-primary .panel-heading {
+    background-color: #152212;
+}
+
+tr:hover {
+    background-color: #3d741f;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+}

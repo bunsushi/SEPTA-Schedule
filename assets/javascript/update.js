@@ -122,8 +122,8 @@ database.ref().child('trains').on("value", function (childSnapshot) {
 
         var row = $("<tr>");
         row.append("<td>" + train + "</td>");
-        row.append("<td>" + destination + "</td>");
-        row.append("<td>" + frequency + "</td>");
+        row.append("<td><span class='glyphicon glyphicon-circle-arrow-right'></span> " + destination + "</td>");
+        row.append("<td> Every " + frequency + " minutes</td>");
         row.append("<td>" + firstTrain + "</td>");
         // row.append("<td>" + childSnapshot.val().currentTime + "</td>");
         row.append("<td>" + nextTrain + "</td>");

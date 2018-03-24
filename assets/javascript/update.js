@@ -1,11 +1,41 @@
+// Current Time (Moment.js Analog Clock Dupe)
+$(function () {
+    function updateClock() {
+        var now = moment(),
+            second = now.seconds() * 6,
+            minute = now.minutes() * 6 + second / 60,
+            hour = (now.hours() % 12) / 12 * 360 + 90 + minute / 12;
+
+        $("#hour").css("transform", "rotate(" + hour + "deg)");
+        $("#minute").css("transform", "rotate(" + minute + "deg)");
+        $("#second").css("transform", "rotate(" + second + "deg)");
+    }
+
+    function timedUpdate() {
+        updateClock();
+        setTimeout(timedUpdate, 1000);
+    }
+
+    timedUpdate();
+});
+
+// Display Curent Date and Time
+function displayTime() {
+    var time = moment().format("llll");
+    $('#display-time').html(time);
+    setTimeout(displayTime, 1000);
+}
+
+displayTime();
+
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyDpXmCQeDFe-GqWdcuGuow3yhXyPALqJXY",
-    authDomain: "septa-schedule.firebaseapp.com",
-    databaseURL: "https://septa-schedule.firebaseio.com",
-    projectId: "septa-schedule",
-    storageBucket: "",
-    messagingSenderId: "723045563457"
+    apiKey: "AIzaSyDffk6cn0eHwYkZhqYqehmNibBVLvELX5E",
+    authDomain: "trolley-tracker-193fd.firebaseapp.com",
+    databaseURL: "https://trolley-tracker-193fd.firebaseio.com",
+    projectId: "trolley-tracker-193fd",
+    storageBucket: "trolley-tracker-193fd.appspot.com",
+    messagingSenderId: "17928785860"
 };
 
 firebase.initializeApp(config);
@@ -56,7 +86,7 @@ $("#add-train").on("click", function (event) {
 function timeUpdater() {
     database.ref().child('trains').once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-            currentTime = moment().format("HH:mm");
+            currentTime = moment().format();
             database.ref('trains/' + childSnapshot.key).update({
                 currentTime: currentTime
             })
@@ -65,13 +95,6 @@ function timeUpdater() {
 };
 
 setInterval(timeUpdater, 1000);
-
-// ATTN: Error code = moment construction falls back to to js date
-// moment is currently deprecrated
-// acceptable moment construction include:
-// > moment("2014-04-25T01:32:21.196Z");  // iso string, utc timezone
-// > moment("2014-04-25T01:32:21.196+0600");  // iso string with timezone
-// > moment("2014 04 25", "YYYY MM DD"); // string with format
 
 // // Fetch data from Firebase
 database.ref().child('trains').on("value", function (childSnapshot) {
@@ -101,6 +124,7 @@ database.ref().child('trains').on("value", function (childSnapshot) {
         row.append("<td>" + train + "</td>");
         row.append("<td>" + destination + "</td>");
         row.append("<td>" + frequency + "</td>");
+        row.append("<td>" + firstTrain + "</td>");
         // row.append("<td>" + childSnapshot.val().currentTime + "</td>");
         row.append("<td>" + nextTrain + "</td>");
         row.append("<td>" + minutesAway + "</td>");

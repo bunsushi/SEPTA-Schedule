@@ -49,7 +49,6 @@ var firstTrain;
 var frequency;
 
 var currentTime;
-// var fullYear = moment(currentTime).subtract(1, "years");
 
 // Capture Admin Button Click
 $("#add-train").on("click", function (event) {
@@ -80,8 +79,6 @@ $("#add-train").on("click", function (event) {
     $("#frequency-input").val("");
 });
 
-// The problem occurs when currentTime changes updates
-
 // Update minutes away by triggering change in firebase children
 function timeUpdater() {
     database.ref().child('trains').once('value', function (snapshot) {
@@ -96,7 +93,7 @@ function timeUpdater() {
 
 setInterval(timeUpdater, 1000);
 
-// // Fetch data from Firebase
+// Fetch data from Firebase
 database.ref().child('trains').on("value", function (childSnapshot) {
     $('tbody').empty();
 
@@ -124,8 +121,6 @@ database.ref().child('trains').on("value", function (childSnapshot) {
         row.append("<td>" + train + "</td>");
         row.append("<td><span class='glyphicon glyphicon-circle-arrow-right'></span> " + destination + "</td>");
         row.append("<td> Every " + frequency + " minutes</td>");
-        row.append("<td>" + firstTrain + "</td>");
-        // row.append("<td>" + childSnapshot.val().currentTime + "</td>");
         row.append("<td>" + nextTrain + "</td>");
         row.append("<td>" + minutesAway + "</td>");
         $("#train-table").append(row);
